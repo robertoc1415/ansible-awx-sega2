@@ -10,10 +10,10 @@
         dest: /home/runner/vsts-agent-linux-x64-3.242.1.tar.gz
 
     - name: Extraer el archivo del agente
-      ansible.builtin.unarchive:
-        src: /home/runner/vsts-agent-linux-x64-3.242.1.tar.gz
-        dest: /home/runner/
-        remote_src: yes
+      ansible.builtin.command:
+        cmd: tar -xzf vsts-agent-linux-x64-3.242.1.tar.gz
+        chdir: /home/runner
+      
 
     - name: Ejecutar el script de configuración (Aceptando licencia y configurando el agente)
       ansible.builtin.expect:
