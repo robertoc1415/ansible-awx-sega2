@@ -16,6 +16,7 @@
       
 
     - name: Ejecutar el script de configuración (Aceptando licencia y configurando el agente)
+      become: no
       ansible.builtin.expect:
         command: ./config.sh
         chdir: /home/runner/
@@ -29,11 +30,13 @@
           'Enter work folder (press enter for _work)': 'runner\n'
 
     - name: Instalar el servicio del agente
+      become: no
       ansible.builtin.command:
         cmd: sudo ./svc.sh install
         chdir: /home/runner/
 
     - name: Iniciar el servicio del agente
+      become: no
       ansible.builtin.command:
         cmd: sudo ./svc.sh start
         chdir: /home/runner/
