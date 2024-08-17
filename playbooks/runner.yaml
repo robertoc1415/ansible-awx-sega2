@@ -1,0 +1,31 @@
+---
+- name: Aprovisionar Runner Ubuntu para Azure DevOps
+  hosts: runner
+  become: yes
+  tasks:
+
+    - name: Descargar el paquete del agente de Azure DevOps
+      ansible.builtin.get_url:
+        url: https://vstsagentpackage.azureedge.net/agent/3.242.1/vsts-agent-linux-x64-3.242.1.tar.gz
+        dest: /home/runner/vsts-agent-linux-x64-3.242.1.tar.gz
+
+    - name: Extraer el archivo del agente
+      ansible.builtin.unarchive:
+        src: /home/runner/vsts-agent-linux-x64-3.242.1.tar.gz
+        dest: /home/runner/
+        remote_src: yes
+
+    - name: Ejecutar el script de configuración
+      ansible.builtin.command:
+        cmd: ./config.sh --unattended --url https://dev.azure.com/SEGA-AIT --auth PAT --token rse7lkypndp4j73phvgr6npfeb3zt4bypu3luueddumvkczkus6a
+        chdir: /home/runner/vsts-agent-linux-x64-3.242.1
+
+    - name: Instalar el servicio del agente
+      ansible.builtin.command:
+        cmd: sudo ./svc.sh install
+        chdir: /home/runner/vsts-agent-linux-x64-3.242.1
+
+    - name: Iniciar el servicio del agente
+      ansible.builtin.command:
+        cmd: sudo ./svc.sh start
+        chdir: /home/runner/vsts-agent-linux-x64-3.242.1
