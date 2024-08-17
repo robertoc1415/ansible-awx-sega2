@@ -18,7 +18,7 @@
     - name: Ejecutar el script de configuración (Aceptando licencia y configurando el agente)
       ansible.builtin.expect:
         command: ./config.sh
-        chdir: /home/runner/vsts-agent-linux-x64-3.242.1
+        chdir: /home/runner/
         responses:
           'Enter (Y/N) Accept the Team Explorer Everywhere license agreement now? (press enter for N)': 'y\n'
           'Enter server URL': 'https://dev.azure.com/SEGA-AIT\n'
@@ -31,9 +31,9 @@
     - name: Instalar el servicio del agente
       ansible.builtin.command:
         cmd: sudo ./svc.sh install
-        chdir: /home/runner/vsts-agent-linux-x64-3.242.1
+        chdir: /home/runner/
 
     - name: Iniciar el servicio del agente
       ansible.builtin.command:
         cmd: sudo ./svc.sh start
-        chdir: /home/runner/vsts-agent-linux-x64-3.242.1
+        chdir: /home/runner/
