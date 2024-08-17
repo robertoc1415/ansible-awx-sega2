@@ -15,10 +15,18 @@
         dest: /home/runner/
         remote_src: yes
 
-    - name: Ejecutar el script de configuración
-      ansible.builtin.command:
-        cmd: ./config.sh --unattended --url https://dev.azure.com/SEGA-AIT --auth PAT --token rse7lkypndp4j73phvgr6npfeb3zt4bypu3luueddumvkczkus6a
+    - name: Ejecutar el script de configuración (Aceptando licencia y configurando el agente)
+      ansible.builtin.expect:
+        command: ./config.sh
         chdir: /home/runner/vsts-agent-linux-x64-3.242.1
+        responses:
+          'Enter (Y/N) Accept the Team Explorer Everywhere license agreement now? (press enter for N)': 'y\n'
+          'Enter server URL': 'https://dev.azure.com/SEGA-AIT\n'
+          'Enter authentication type (press enter for PAT)': '\n'
+          'Enter personal access token': 'rse7lkypndp4j73phvgr6npfeb3zt4bypu3luueddumvkczkus6a\n'
+          'Enter agent pool (press enter for default)': 'runner\n'
+          'Enter agent name (press enter for myvm-1)': 'runner\n'
+          'Enter work folder (press enter for _work)': 'runner\n'
 
     - name: Instalar el servicio del agente
       ansible.builtin.command:
